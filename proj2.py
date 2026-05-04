@@ -57,3 +57,8 @@ def read_csv_lines(filename: str) -> Optional[Node]:
 
     data_rows = rows[1:]
     return build_list(data_rows, 0)
+
+def listlen(data: Optional[Node]) -> int:
+    if data is None:
+        return 0
+    return 1 + listlen(data.next)
