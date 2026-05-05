@@ -62,3 +62,30 @@ def listlen(data: Optional[Node]) -> int:
     if data is None:
         return 0
     return 1 + listlen(data.next)
+
+def filter_rows(
+        data: Optional[Node],
+        field_name: str,
+        comparison: str,
+        value: Union[str, int, float]
+) -> Optional[Node]:
+    if data is None:
+        return None
+    row_value = getattr(data.value, field_name)
+    rest = filter_rows(data.next, field_name, comparison, value)
+    if row_value is None:
+        return rest
+    keep = False
+    if field_name == "country":
+        if comparison == "equal":
+            keep = row_value == value
+    else:
+        if comparison == "less_than":
+            keep = row_value < value
+        elif comparison == "greater_than":
+            keep = row_value > value
+        elif comparison == "equal":
+            keep = row_value == value
+    if keep:
+        return Node(data.value, rest)
+    return rest
